@@ -16,6 +16,7 @@ const db = new sqlite3.Database(
 );
 
 // config express
+let port = 3000 | process.env.PORT;
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
@@ -46,7 +47,7 @@ app.get("/api/home", (request, response) => {
 				// 	});
 				// });
 
-				response.json({"data":rows})
+				response.json({rows})
 			} else {
 				console.log("uh oh. no data.")
 				response.json({"message": "no data"});
@@ -57,9 +58,9 @@ app.get("/api/home", (request, response) => {
 
 app.post("/add", (request, response) => {
 
-})
+});
 
 // start the server
-app.listen(3000, () => {
-	console.log("listening into localhost:3000");
+app.listen(port, () => {
+	console.log("listening into http://localhost:" + port);
 });
