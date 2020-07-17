@@ -16,7 +16,7 @@ h1, h2, h3, h4, h5, h6, .date {
 }
 
 .notes:before {
-	content: "- ";
+	content: "– ";
 }
 
 .completed:before {
