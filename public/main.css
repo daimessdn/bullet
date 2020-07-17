@@ -1,0 +1,36 @@
+body {
+	font-family: "Helvetica Neue";
+}
+
+h1, h2, h3, h4, h5, h6, .date {
+	font-family: "Major Mono Display";
+	margin: 0;
+}
+
+.events::before {
+	content: "◦ ";
+}
+
+.tasks::before {
+	content: "• ";
+}
+
+.notes:before {
+	content: "- ";
+}
+
+.completed:before {
+	content: "⨯ ";
+}
+
+.prior:before {
+	content: "! ";
+}
+
+.inspired:before {
+	content: "! ";
+}
+
+.irrelevant {
+	text-decoration: line-through;
+}
