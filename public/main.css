@@ -2,7 +2,7 @@ body {
 	font-family: "Helvetica Neue";
 }
 
-h1, h2, h3, h4, h5, h6, .date {
+h1, h2, h3, h4, h5, h6, .date, input, textarea {
 	font-family: "Major Mono Display";
 	margin: 0;
 }
