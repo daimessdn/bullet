@@ -6,19 +6,16 @@
 	<link rel="stylesheet" href="./main.css">
 </head>
 <body>
-	<h4 class="prior tasks">tv agenda</h4>
-	
-	<p class="date">22/07/2020 - 15:00 - 15:30</p>
-	<p>a must tv program watch</p>
-
-	<h4 class="completed"> tv agenda</h4>
-	
-	<p class="date">22/07/2020 - 15:00 - 15:30</p>
-	<p>a must tv program watch</p>
-
-	<h4 class="irrelevant">tv agenda</h4>
-	
-	<p class="date">22/07/2020 - 15:00 - 15:30</p>
-	<p>a must tv program watch</p>
+	<% agenda.forEach((item) => { %>
+		<h4 class="tasks">
+			<%= item.name %>
+		</h4>
+		
+		<p class="date">
+			<%= item.date %>-<%=item.time %>
+		</p>
+		
+		<p>a must tv program watch</p>
+	<% }); %>
 </body>
 </html>

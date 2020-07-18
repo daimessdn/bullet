@@ -1,5 +1,6 @@
 const express = require("express");
 const sqlite3 = require('sqlite3').verbose();
+const axios = require('axios').default;
 
 // init'd express and database
 const app = express();
@@ -20,12 +21,18 @@ let port = 3000 | process.env.PORT;
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
-// routing
+// endpoint
 app.get("/", (request, response) => {
 	console.log("welcome to home");
-	response.render("index.ejs");
+
+	axios.get(`http://localhost:${port}/api/home`
+	).then((res) => {
+		// console.log(response.data.rows);
+		response.render("index.ejs", {agenda: res.data.rows});
+	}).catch(error => console.log(error));
 });
 
+// api endpoint
 app.get("/api/home", (request, response) => {
 	let sql = "SELECT * FROM agenda;";
 
@@ -37,15 +44,17 @@ app.get("/api/home", (request, response) => {
 			if (rows) {
 				console.log("here's your data.");
 				
-				// rows.forEach(sch => {
-				// 	console.log({
-				// 		id: sch.id,
-				// 		name: sch.name,
-				// 		date: sch.date,
-				// 		time: sch.time,
-				// 		status: sch.status
-				// 	});
-				// });
+				/* 
+					rows.forEach(sch => {
+						console.log({
+							id: sch.id,
+							name: sch.name,
+							date: sch.date,
+							time: sch.time,
+							status: sch.status
+						});
+				 	});
+				*/
 
 				response.json({rows})
 			} else {
