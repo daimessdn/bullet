@@ -6,21 +6,25 @@
 	<link rel="stylesheet" href="./main.css">
 </head>
 <body>
-	<% agenda.forEach((item) => { %>
-		<h4 class="tasks">
-			<%= item.name %>
-		</h4>
-		
-		<p class="date">
-			<%= item.date %> - <%=item.time %>
-		</p>
-		
-		<p><%= item.description %></p>
-	<% }); %>
+	<% if (agenda.length !== 0) {%>
+		<% agenda.forEach((item) => { %>
+			<h4 class="tasks">
+				<%= item.name %>
+			</h4>
+			
+			<p class="date">
+				<%= item.date %> - <%=item.time %>
+			</p>
+			
+			<p><%= item.description %></p>
+		<% }); %>
+	<% } else { %>
+		<h4>there are no schedule. insert one now.</h4>
+	<% } %>
 
-	<form action="/add" method="post">
-		<input type="time">
-		<input type="date">
+	<form action="/add" method="post" id="note-form">
+		<input type="time" name="time">
+		<input type="date" name="date">
 
 		<br />
 
@@ -34,5 +38,11 @@
 
 		<input type="submit" value="add">
 	</form>
+	<script>
+		const nf = document.getElementById("note-form");
+
+		nf.addEventListener("submit", (event) => {
+			event.preventDefault();
+		})
 </body>
 </html>

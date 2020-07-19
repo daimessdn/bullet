@@ -1,6 +1,7 @@
 const express = require("express");
 const sqlite3 = require('sqlite3').verbose();
 const axios = require('axios').default;
+const bodyParser = require("body-parser");
 
 // init'd express and database
 const app = express();
@@ -18,10 +19,12 @@ const db = new sqlite3.Database(
 
 // config express
 let port = 3000 | process.env.PORT;
+
+app.use(bodyParser.urlencoded({ extended: false })); 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
-// endpoint
+// endpoints
 app.get("/", (request, response) => {
 	console.log("welcome to home");
 
@@ -32,7 +35,7 @@ app.get("/", (request, response) => {
 	}).catch(error => console.log(error));
 });
 
-// api endpoint
+// api endpoints
 app.get("/api/home", (request, response) => {
 	let sql = "SELECT * FROM agenda;";
 
@@ -43,19 +46,6 @@ app.get("/api/home", (request, response) => {
 		} else {
 			if (rows) {
 				console.log("here's your data.");
-				
-				/* 
-					rows.forEach(sch => {
-						console.log({
-							id: sch.id,
-							name: sch.name,
-							date: sch.date,
-							time: sch.time,
-							status: sch.status
-						});
-				 	});
-				*/
-
 				response.json({rows})
 			} else {
 				console.log("uh oh. no data.")
@@ -66,6 +56,30 @@ app.get("/api/home", (request, response) => {
 });
 
 app.post("/add", (request, response) => {
+	db.serialize(() => {
+		const date = new Date(request.body.date);
+		console.log(request.body.date, request.body.time);
+		console.log(request.body);
+
+		let entry = {
+			name: request.body.name,
+			description: request.body.description,
+			date: request.body.date,
+			time: request.body.time,
+		};
+
+		let sql = `INSERT INTO agenda (name, description, date, time, status) VALUES ("${entry.name}", "${entry.description}", "${entry.date}", "${entry.time}", 0);`;
+		
+		db.run(sql, (error) => {
+			if (error) {
+				console.log("there's an error");
+				console.log(error);
+			} else {
+				console.log("your note is finally added");
+				response.redirect("/");
+			}
+		});
+	});
 
 });
 
