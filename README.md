@@ -5,4 +5,9 @@
 languages features:
 - main server (express.js)
 - interfaces (ejs)
-- database (sqlite)
+- database (sqlite3)
+- other(s):
+	- API interactions (axios)
+	- data receiving (body-parser)
+	- realtime update (socket.io)
+- development (nodemon)
