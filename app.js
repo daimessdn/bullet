@@ -35,8 +35,17 @@ app.get("/", (request, response) => {
 	}).catch(error => console.log(error));
 });
 
+app.post("/add", (request, response) => {
+	axios.post(`http://localhost:${port}/api/home/add`, request.body
+	).then((res) => {
+		console.log(request.body);
+		console.log(res.data);
+		response.redirect("/");
+	}).catch(error => console.log(error));
+});
+
 // api endpoints
-app.get("/api/home", (request, response) => {
+app.get("/api/home/", (request, response) => {
 	let sql = "SELECT * FROM agenda;";
 
 	db.all(sql, (error, rows) => {
@@ -55,13 +64,9 @@ app.get("/api/home", (request, response) => {
 	});
 });
 
-app.post("/add", (request, response) => {
+app.post("/api/home/add", (request, response, entry) => {
 	db.serialize(() => {
-		const date = new Date(request.body.date);
-		console.log(request.body.date, request.body.time);
-		console.log(request.body);
-
-		let entry = {
+		entry = {
 			name: request.body.name,
 			description: request.body.description,
 			date: request.body.date,
@@ -76,11 +81,14 @@ app.post("/add", (request, response) => {
 				console.log(error);
 			} else {
 				console.log("your note is finally added");
-				response.redirect("/");
+				response.json({
+					"status": 200,
+					"message": "your note is finally added",
+					"data": entry
+				});
 			}
 		});
 	});
-
 });
 
 // start the server
