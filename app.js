@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require("express");	
 const sqlite3 = require('sqlite3').verbose();
 const axios = require('axios').default;
 const bodyParser = require("body-parser");
@@ -35,14 +35,25 @@ app.get("/", (request, response) => {
 	}).catch(error => console.log(error));
 });
 
+/*
 app.post("/add", (request, response) => {
-	axios.post(`http://localhost:${port}/api/home/add`, request.body
-	).then((res) => {
-		console.log(request.body);
+	const config = {
+	  method: 'post',
+	  url: `http://localhost:${port}/api/home/add`,
+	  headers: { 
+	    'Content-Type': 'application/x-www-form-urlencoded'
+	  },
+	  data : JSON.stringify(request.body)
+	};
+
+	axios(config).then((res) => {
+		res.data.data = data;
 		console.log(res.data);
 		response.redirect("/");
 	}).catch(error => console.log(error));
+	response.redirect("/");
 });
+*/
 
 // api endpoints
 app.get("/api/home/", (request, response) => {
@@ -64,16 +75,16 @@ app.get("/api/home/", (request, response) => {
 	});
 });
 
-app.post("/api/home/add", (request, response, entry) => {
+app.post("/api/home/add", (request, response) => {
 	db.serialize(() => {
-		entry = {
+		let entry = {
 			name: request.body.name,
-			description: request.body.description,
 			date: request.body.date,
 			time: request.body.time,
+			status: request.body.status
 		};
 
-		let sql = `INSERT INTO agenda (name, description, date, time, status) VALUES ("${entry.name}", "${entry.description}", "${entry.date}", "${entry.time}", 0);`;
+		let sql = `INSERT INTO agenda (name, date, time, status) VALUES ("${entry.name}", "${entry.description}", "${entry.date}", "${entry.time}", ${entry.status});`;
 		
 		db.run(sql, (error) => {
 			if (error) {
