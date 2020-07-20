@@ -7,16 +7,25 @@
 </head>
 <body>
 	<% if (agenda.length !== 0) {%>
+		<% const date = new Date();
+		    let currentAgenda = `${
+		   			date.getFullYear()}-${
+		   			date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)}-${
+		   			date.getDate()}`; %>
+
+		<% console.log(currentAgenda); %>
 		<% agenda.forEach((item) => { %>
-			<h4 class="tasks">
-				<%= item.name %>
-			</h4>
-			
-			<p class="date">
-				<%= item.date %> - <%=item.time %>
-			</p>
-			
-			<p><%= item.description %></p>
+		    <% if (item.date == currentAgenda) { %>
+				<h4 class="tasks">
+					<%= item.name %>
+				</h4>
+				
+				<p class="date">
+					<%= item.date %> - <%=item.time %>
+				</p>
+				
+				<p><%= item.description %></p>
+			<% } %>
 		<% }); %>
 	<% } else { %>
 		<h4>there are no schedule. insert one now.</h4>
