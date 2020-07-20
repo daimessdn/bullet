@@ -78,13 +78,14 @@ app.get("/api/home/", (request, response) => {
 app.post("/api/home/add", (request, response) => {
 	db.serialize(() => {
 		let entry = {
+			id: randomId(15),
 			name: request.body.name,
 			date: request.body.date,
 			time: request.body.time,
 			status: request.body.status
 		};
 
-		let sql = `INSERT INTO agenda (name, date, time, status) VALUES ("${entry.name}", "${entry.description}", "${entry.date}", "${entry.time}", ${entry.status});`;
+		let sql = `INSERT INTO agenda (id, name, date, time, status) VALUES ("${entry.id}", "${entry.name}", "${entry.date}", "${entry.time}", ${entry.status});`;
 		
 		db.run(sql, (error) => {
 			if (error) {
@@ -106,3 +107,14 @@ app.post("/api/home/add", (request, response) => {
 app.listen(port, () => {
 	console.log("listening into http://localhost:" + port);
 });
+
+// other functions
+const randomId = (length) => {
+   let result           = '';
+   const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   const charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
