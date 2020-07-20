@@ -7,25 +7,41 @@
 </head>
 <body>
 	<% if (agenda.length !== 0) {%>
-		<% const date = new Date();
-		    let currentAgenda = `${
-		   			date.getFullYear()}-${
-		   			date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)}-${
-		   			date.getDate()}`; %>
+		<%  // const date = new Date();
+		    // let currentAgenda = `${
+		   		//	date.getFullYear()}-${
+		   		//	date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)}-${
+		   		//	date.getDate()}`;
+		%>
 
-		<% console.log(currentAgenda); %>
 		<% agenda.forEach((item) => { %>
-		    <% if (item.date == currentAgenda) { %>
-				<h4 class="tasks">
+		    <% 
+		    	// if (item.date == currentAgenda) { 
+		    %>
+		    	<% const status = (status = item.status) => {
+		    		switch (status) {
+				    		case 0:
+				    			return "events";
+				    		case 1:
+				    			return "notes";
+				    		case 2:
+				    			return "tasks";
+				    		case 3:
+				    			return "completed";
+				    		case 4:
+				    			return "irrelevant";
+			    		}
+			    	}; %>
+
+				<p class="<%= status() %> item">
 					<%= item.name %>
-				</h4>
-				
-				<p class="date">
-					<%= item.date %> - <%=item.time %>
+					<% if (item.date !== "" || item.time !== "") { %>
+						(<%= item.date %>, <%=item.time %>)
+					<% } %>
 				</p>
-				
-				<p><%= item.description %></p>
-			<% } %>
+			<% 
+				// }
+			%>
 		<% }); %>
 	<% } else { %>
 		<h4>there are no schedule. insert one now.</h4>
